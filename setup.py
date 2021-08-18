@@ -65,7 +65,7 @@ def main():
         ],
         packages=packages,
         install_requires=['numpy', 'torch', 'indexed-file'],
-        python_requires='>=3.6.1',
+        python_requires='>=3.8',
         description='A simplified framework and utilities for PyTorch.',
         long_description=readme,
         long_description_content_type='text/markdown',
