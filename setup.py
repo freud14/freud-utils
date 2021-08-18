@@ -64,7 +64,7 @@ def main():
             'Topic :: Software Development :: Libraries :: Python Modules'
         ],
         packages=packages,
-        install_requires=['numpy', 'scikit-learn', 'torch'],
+        install_requires=['numpy', 'torch', 'indexed-file'],
         python_requires='>=3.6.1',
         description='A simplified framework and utilities for PyTorch.',
         long_description=readme,
