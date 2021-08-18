@@ -52,7 +52,10 @@ def _read_all_entries_single_process(directory, indices, keys):
 
 def _read_all_entries_multi_process(directory, indices, keys, num_workers):
     if num_workers is None:
-        num_workers = len(os.sched_getaffinity(0))
+        if hasattr(os, 'sched_getaffinity'):
+            num_workers = len(os.sched_getaffinity(0))
+        else:
+            num_workers = os.cpu_count()
     with mp.Pool(num_workers, initializer=_init, initargs=(directory, )) as pool:
         return pool.starmap(_read_pickle_entry, zip(indices, repeat(keys)))
 
