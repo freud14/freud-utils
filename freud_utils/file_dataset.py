@@ -51,6 +51,7 @@ def _read_all_entries_single_process(directory, indices, keys):
 
 
 def _read_all_entries_multi_process(directory, indices, keys, num_workers):
+    # pylint: disable=no-member
     if num_workers is None:
         if hasattr(os, 'sched_getaffinity'):
             num_workers = len(os.sched_getaffinity(0))
