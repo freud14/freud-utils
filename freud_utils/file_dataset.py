@@ -93,6 +93,7 @@ class FileDataset(Dataset):
     def __init__(self, directory, is_binary):
         self.directory = directory
         self.mode = 'rb' if is_binary else 'r'
+        self.fd = None
         self.open()
 
     def on_worker_init(self, worker_id):
@@ -100,22 +101,19 @@ class FileDataset(Dataset):
         Called automatically when `worker_init_fn` is set to `freud_utils.worker_init.generic_worker_init_fn`.
         """
         # pylint: disable=unused-argument
-        self.reopen()
+        self.open()
 
     def getobject(self, content):
         raise NotImplementedError()
 
     def open(self):
+        self.close()
         self.fd = indexed_file(self.directory, self.mode)
 
     def close(self):
         if self.fd is not None:
             self.fd.close()
             self.fd = None
-
-    def reopen(self):
-        self.close()
-        self.open()
 
     def __getitem__(self, index):
         return self.getobject(self.fd.read_entry(index))
