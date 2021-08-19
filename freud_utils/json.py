@@ -33,11 +33,14 @@ def _set_default_arg(kwargs):
         kwargs['default'] = numpy_encoder
 
 
-def json_dumps(*args, **kwargs):
+def json_dumps(obj, *args, **kwargs):
     _set_default_arg(kwargs)
-    return json.dumps(*args, **kwargs)
+    return json.dumps(obj, *args, **kwargs)
 
 
-def json_dump(*args, **kwargs):
+def json_dump(obj, fp, *args, **kwargs):
     _set_default_arg(kwargs)
-    return json.dump(*args, **kwargs)
+    if isinstance(fp, str):
+        with open(fp, 'w') as file_descriptor:
+            return json.dump(obj, file_descriptor, *args, **kwargs)
+    return json.dump(obj, fp, *args, **kwargs)
