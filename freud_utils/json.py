@@ -3,14 +3,11 @@ import numpy as np
 
 
 def numpy_encoder(obj):
-    if isinstance(
-            obj,
-        (np.int_, np.intc, np.intp, np.int8, np.int16, np.int32, np.int64, np.uint8, np.uint16, np.uint32, np.uint64)):
-        return int(obj)
-    if isinstance(obj, (np.float_, np.float16, np.float32, np.float64)):
-        return float(obj)
-    if isinstance(obj, np.ndarray):
-        return obj.tolist()
+    # See https://stackoverflow.com/a/52604722/2117197
+    if type(obj).__module__ == np.__name__:
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return obj.item()
 
     raise TypeError('Unknown type:', type(obj))
 
