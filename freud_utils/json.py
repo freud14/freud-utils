@@ -1,4 +1,5 @@
 import json
+import pathlib
 import numpy as np
 
 
@@ -40,7 +41,7 @@ def json_dumps(obj, *args, **kwargs):
 
 def json_dump(obj, fp, *args, **kwargs):
     _set_default_arg(kwargs)
-    if isinstance(fp, str):
+    if isinstance(fp, (str, pathlib.Path)):
         with open(fp, 'w') as file_descriptor:
             return json.dump(obj, file_descriptor, *args, **kwargs)
     return json.dump(obj, fp, *args, **kwargs)
