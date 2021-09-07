@@ -13,6 +13,13 @@ def numpy_encoder(obj):
     raise TypeError('Unknown type:', type(obj))
 
 
+def date_encoder(obj):
+    if hasattr(obj, 'isoformat'):
+        return obj.isoformat()
+
+    raise TypeError('Unknown type:', type(obj))
+
+
 def _compound_defaults(*defaults):
 
     def new_default(obj):
@@ -28,10 +35,11 @@ def _compound_defaults(*defaults):
 
 
 def _set_default_arg(kwargs):
+    defaults = (numpy_encoder, date_encoder)
     if 'default' in kwargs:
-        kwargs['default'] = _compound_defaults(kwargs['default'], numpy_encoder)
+        kwargs['default'] = _compound_defaults(kwargs['default'], *defaults)
     else:
-        kwargs['default'] = numpy_encoder
+        kwargs['default'] = _compound_defaults(*defaults)
 
 
 def json_dumps(obj, *args, **kwargs):
