@@ -45,3 +45,14 @@ def json_dump(obj, fp, *args, **kwargs):
         with open(fp, 'w') as file_descriptor:
             return json.dump(obj, file_descriptor, *args, **kwargs)
     return json.dump(obj, fp, *args, **kwargs)
+
+
+def json_loads(s, *args, **kwargs):
+    return json.loads(s, *args, **kwargs)
+
+
+def json_load(fp, *args, **kwargs):
+    if isinstance(fp, (str, pathlib.Path)):
+        with open(fp, 'r') as file_descriptor:
+            return json.load(file_descriptor, *args, **kwargs)
+    return json.load(fp, *args, **kwargs)
