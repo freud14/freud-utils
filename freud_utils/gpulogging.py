@@ -27,14 +27,17 @@ class GPUStatsLogger:
                 file_descriptor.flush()
 
     def _log_process(self):
-        stop = False
-        while not stop:
-            if not stop:
-                self.log_gpustats()
+        try:
+            stop = False
+            while not stop:
+                if not stop:
+                    self.log_gpustats()
 
-            self.process_condition.acquire()
-            stop = self.process_condition.wait(self.interval)
-            self.process_condition.release()
+                self.process_condition.acquire()
+                stop = self.process_condition.wait(self.interval)
+                self.process_condition.release()
+        except KeyboardInterrupt:
+            pass
 
     def start(self):
         self.process_condition = mp.Condition()
@@ -60,9 +63,12 @@ class GPUStatsLogger:
 
 
 def launch(config):
-    logger = GPUStatsLogger(config.filename, interval=config.interval)
-    logger.start()
-    logger.join()
+    try:
+        logger = GPUStatsLogger(config.filename, interval=config.interval)
+        logger.start()
+        logger.join()
+    except KeyboardInterrupt:
+        pass
 
 
 def parse_args():
