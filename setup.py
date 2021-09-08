@@ -69,7 +69,7 @@ def main():
         description='A simplified framework and utilities for PyTorch.',
         long_description=readme,
         long_description_content_type='text/markdown',
-        extras_require={'gpustat': 'gpustat'},
+        extras_require={'gpustat': 'gpustat', 'matplotlib': 'matplotlib'},
     )
 
 
