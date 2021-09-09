@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 from collections import namedtuple
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,8 +17,13 @@ ALL_KEYS = KEYS + EXTRA_KEYS
 
 
 def launch(config):
+    entries = []
     with sys.stdin if config.filename == '-' else open(config.filename, 'r') as fd:
-        entries = [json_loads(line) for line in fd]
+        for i, line in enumerate(fd):
+            try:
+                entries.append(json_loads(line))
+            except json.JSONDecodeError:
+                print(f"Invalid line {i}.")
 
     query_times = np.array([np.datetime64(entry['query_time']) for entry in entries])
 
